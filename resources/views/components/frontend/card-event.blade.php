@@ -6,7 +6,7 @@
     'date',
     'price',
     'description',
-    'routes'=> url('/')
+    'route'=> url('/')
 ])
 
 <div class="group rounded-2xl w-full overflow-hidden relative min-h-[297px] bg-primary">
@@ -26,11 +26,11 @@
                     {{ $title }}
                 </div>
                 <p class="text-pastel-purple text-sm mt-[6px]">
-                    {{ $category }}•{{ $date }}
+                    {{ $category }} • {{ $date }}
                 </p>
             </div>
             <p class="text-xl font-semibold text-secondary">
-                ${{ number_format($price) }}
+                {{number_format($price) }}
             </p>
         </div>
         <p
@@ -38,7 +38,7 @@
             {{ $description }}
         </p>
         <div class="mt-auto transition duration-300 ease-in-out opacity-0 group-hover:opacity-100">
-            <a href="{{$routes}}" class="block btn-secondary">
+            <a href="{{$route}}" class="block btn-secondary">
                 View Details
             </a>
         </div>

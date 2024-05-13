@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('duration')->nullable();
             $table->boolean('is_populer')->default(false);
             $table->json('photos')->nullable();
-            $table->foreignId('catergory_id')->nullable()->constrained('categories')->onDelete('set null');
+            $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('set null');
             $table->string('type')->default('offline');
             $table->softDeletes();
             $table->timestamps();

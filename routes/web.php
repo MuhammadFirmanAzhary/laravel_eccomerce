@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'frontend.index')->name('home');
+Route::get('/',[HomeController::class,'index'])->name('home');
 Route::view('/details', 'frontend.details')->name('detail');
 Route::view('/checkout', 'frontend.checkout')->name('checkout');
 Route::view('/checkout-success', 'frontend.checkout-success')->name('checkout-success');

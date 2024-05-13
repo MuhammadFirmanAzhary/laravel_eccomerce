@@ -6,7 +6,7 @@ use Faker\Factory;
 use App\Models\Category;
 use App\Models\Event;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
 
 class EventSeeder extends Seeder
 {
@@ -34,7 +34,7 @@ class EventSeeder extends Seeder
                 'start_time' => $faker->dateTimeBetween('+1month', '+6month'),
                 'location' => $faker->address,
                 'duration' => $faker->numberBetween(1, 10),
-                'catergory_id' => Category::inRandomOrder()->first()->id,
+                'category_id' => Category::inRandomOrder()->first()->id,
                 'type' => $faker->randomElement(['online', 'offline']),
                 'is_populer' => $faker->boolean(20),
 
@@ -42,7 +42,7 @@ class EventSeeder extends Seeder
 
             //membuat tiket berdasarkan ticketCount
             for($j = 0; $j < $ticketCount; $j++) {
-               $event->  s()->create([
+               $event->tickets()->create([
                  'name'=>$faker->sentence(2),
                  'price'=>$faker->numberBetween(10,100),
                  'quantity'=>$faker->numberBetween(10,100),

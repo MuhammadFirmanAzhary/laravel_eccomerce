@@ -1,5 +1,5 @@
 @props([
-    'icon'=>asset('assets/svgs/ic-chart-growth.svg'),
+    'icon',
     'name',
     'totalEvents',
     ])
