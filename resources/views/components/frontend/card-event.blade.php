@@ -30,7 +30,7 @@
                 </p>
             </div>
             <p class="text-xl font-semibold text-secondary">
-                {{number_format($price) }}
+                ${{number_format($price) }}
             </p>
         </div>
         <p

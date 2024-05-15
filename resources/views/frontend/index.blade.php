@@ -43,15 +43,18 @@
               <span class="text-butter-yellow">Big</span> Events, <br>
               Coming <span class="text-butter-yellow">Soon</span>
           </h5>
-
-          <a href="#!" class="btn-primary">
+          @if (!request()->has('all_events'))
+          <a href=" {{ request()->fullUrlWithQuery(['all_events' => 1]) }} " class="btn-primary">
               View All
           </a>
+          @endif
       </div>
 
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-[30px]">
-          <x-frontend.card-event :cover="asset('assets/images/event-1.webp')" :title="'Agus Sumardi'" :category="'Music'" :date="'26 Jun 2023'"
-              :price="800" :description="'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'" :route="route('detail')" />
+         @foreach ($events as $event)
+         <x-frontend.card-event :cover="$event->thumbnail" :title="$event->name" :category="$event->category->name" :date="$event->start_time"
+            :price="$event->start_from" :description="$event->headline" :route="route('detail', $event->slug)" :isPopuler="$event->is_populer"/>
+         @endforeach
       </div>
   </section>
 
@@ -63,17 +66,17 @@
                   <span class="text-butter-yellow">Browse</span> by <br>
                   Top <span class="text-butter-yellow">Categories</span>
               </h5>
-
-              <a href="#!" class="btn-primary">
+              @if (!request()->has('all_categories'))
+              <a href="{{ request()->fullUrlWithQuery(['all_categories' => 1]) }}" class="btn-primary">
                   View All
               </a>
+              @endif
           </div>
 
           <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-[30px] relative">
-              <x-frontend.card-category name="Startup" totalEvents="189399" :icon="asset('assets/svgs/ic-chart-growth.svg')" />
-              <x-frontend.card-category name="Music" totalEvents="45990" :icon="asset('assets/svgs/ic-mic.svg')" />
-              <x-frontend.card-category name="Movies" totalEvents="24400" :icon="asset('assets/svgs/ic-movie.svg')" />
-              <x-frontend.card-category name="Game" totalEvents="850456" :icon="asset('assets/svgs/ic-console.svg')" />
+            @foreach ($categories as $category)
+              <x-frontend.card-category :name="$category->name" :totalEvents="$category->events_count" :icon="$category->icon ?? asset('assets/svgs/ic-movie.svg')" :route="request()->fullUrlWithQuery(['category' => $category->id])"/>
+              @endforeach
           </div>
       </div>
 

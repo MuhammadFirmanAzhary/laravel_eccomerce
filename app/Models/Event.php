@@ -49,9 +49,9 @@ class Event extends Model
      */
     public function getStartFromAttribute()
     {
-        return $this->tickets()->orderBy('price')->get();
-        
-    }
+        $lowestTicket = $this->tickets()->orderBy('price')->first();
+        return $lowestTicket ? $lowestTicket->price : null;
+    } 
      /**
      * Get the first photo as a thumbnail from the photos attribute, if not exist return default image.
      */

@@ -12,9 +12,10 @@ class HomeController extends Controller
     public function index(): View
     {  
         $events= $this->fetchEvent();
+      
         $categories = $this->fetchCategory();
-        dd($categories);
-        return view('frontend.index');
+       
+        return view('frontend.index',compact('events','categories'));
     }
 
    //fetch data event

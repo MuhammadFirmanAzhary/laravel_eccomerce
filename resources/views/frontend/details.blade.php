@@ -58,7 +58,7 @@
             </div>
             <!-- Next Button -->
             <div class="absolute -translate-y-1/2 cursor-pointer top-1/2 lg:left-20" id="carouselLeftButton">
-                <img src="=" {{ asset('assets/svgs/ic-left-rounded.svg') }}" alt="tickety-assets">
+                <img src=" {{ asset('assets/svgs/ic-left-rounded.svg') }}" alt="tickety-assets">
             </div>
         </div>
     </section>
@@ -223,7 +223,7 @@
                     Book Tickets Now
                 </button> -->
             </form>
-        </div>np
+        </div>
     </section>
     
     @push('css')
