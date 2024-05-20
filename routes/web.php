@@ -17,8 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/',[HomeController::class,'index'])->name('home');
 Route::get('/details/{slug}',[EventController::class,'index'])->name('detail');
-Route::view('/checkout', 'frontend.checkout')->name('checkout');
-Route::view('/checkout-success', 'frontend.checkout-success')->name('checkout-success');
+Route::post('/checkout/event/{slug}', [EventController::class,'checkout'])->name('checkout');
+Route::post('/checkout/pay', [EventController::class,'checkoutPay'])->name('checkout-pay');
+Route::post('/checkout-success', [EventController::class,' checkoutSuccess'])->name('checkout-success');
 
 Route::middleware([
     'auth:sanctum',

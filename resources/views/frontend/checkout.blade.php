@@ -23,9 +23,9 @@
 
             <div class="flex flex-wrap items-center justify-center gap-y-[30px] lg:justify-between lg:items-start">
                 <div class="max-w-[500px]">
-                    <img src="{{ asset('assets/images/gallery-1.webp') }}" class="w-[280px] h-[200px] rounded-2xl" alt="tickety-assets">
+                    <img src="{{ asset($event->thumbnail) }}" class="w-[280px] h-[200px] rounded-2xl" alt="tickety-assets">
                     <h1 class="text-[32px] font-bold mt-5 mb-[30px]">
-                        Design 101: Product Manager
+                        {{ $event->name }}
                     </h1>
 
                     <!-- Visible input fields -->
@@ -40,7 +40,7 @@
                             <label for="email" class="text-lg font-medium">Email Address</label>
                             <input type="email" name="email" placeholder="Write your email address"
                                 class="px-5 py-[13px] placeholder:text-smoke-purple placeholder:font-normal font-semibold text-base rounded-[50px] bg-primary border-2 border-transparent border-solid focus:border-persian-pink focus:outline-none"
-                                value="shayna@bwag" id="visibleEmailField">
+                                value="" id="visibleEmailField">
                         </div>
                     </div>
 
@@ -49,40 +49,24 @@
                         <h6 class="text-xl font-semibold">
                             Payment Details
                         </h6>
-                        <!-- Entry ticket -->
+                        @foreach ($tickets as $ticket)
+                                 <!-- ticket -->
                         <div class="inline-flex items-center justify-between gap-4">
                             <p class="text-base font-medium">
-                                22 entry ticket
+                               {{ $ticket->name }} <small>x {{ $ticket->quantity }}</small>
                             </p>
                             <p class="text-base font-semibold">
-                                $44,000
+                                ${{ number_format($ticket->price) }}
                             </p>
                         </div>
-                        <!-- Pro ticket -->
-                        <div class="inline-flex items-center justify-between gap-4">
-                            <p class="text-base font-medium">
-                                17 pro ticket
-                            </p>
-                            <p class="text-base font-semibold">
-                                $87,000
-                            </p>
-                        </div>
-                        <!-- Enterprise ticket -->
-                        <div class="inline-flex items-center justify-between gap-4">
-                            <p class="text-base font-medium">
-                                2 enterprise ticket
-                            </p>
-                            <p class="text-base font-semibold">
-                                $290,000
-                            </p>
-                        </div>
+                        @endforeach
                         <!-- Unique code -->
                         <div class="inline-flex items-center justify-between gap-4">
                             <p class="text-base font-medium">
                                 Unique code
                             </p>
                             <p class="text-base font-semibold">
-                                $99
+                                ${{ number_format($uniquePrice) }}
                             </p>
                         </div>
                         <!-- Tax -->
@@ -91,7 +75,7 @@
                                 Tax 22%
                             </p>
                             <p class="text-base font-semibold">
-                                $18,000
+                                ${{ number_format($tax) }}
                             </p>
                         </div>
                         <!-- Grand total -->
@@ -100,14 +84,16 @@
                                 Grand total
                             </p>
                             <p class="text-[32px] text-secondary font-bold underline underline-offset-4">
-                                $500,000
+                                ${{ number_format($totalPrice) }}
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <form action="" method=""
+                <form action="{{ route("checkout-pay") }}" method="POST " enctype="multipart/form-data"
                     class="bg-primary p-5 rounded-2xl flex flex-col gap-5 max-w-[380px] w-full">
+                    @csrf
+                    @method('post')
                     <p class="text-xl font-semibold">
                         Payment method
                     </p>
@@ -118,7 +104,7 @@
                             <label for="manualTransfer" class="relative z-10 block w-full text-base font-semibold cursor-pointer">
                                 Manual Transfer
                             </label>
-                            <input type="radio" value="manual-transfer" id="manualTransfer" name="payment-method"
+                            <input type="radio" value="manual_transfer" id="manualTransfer" name="payment-method"
                                 class="absolute inset-0 z-10 invisible peer/manual-transfer" checked>
                             <div class="check-appearance"></div>
 
@@ -158,7 +144,7 @@
                             <label for="virtualAccount" class="relative z-10 block w-full text-base font-semibold cursor-pointer">
                                 Virtual Account
                             </label>
-                            <input type="radio" value="virtual-account" id="virtualAccount" name="payment-method"
+                            <input type="radio" value="virtual_account" id="virtualAccount" name="payment_method"
                                 class="absolute inset-0 z-10 invisible peer/virtual-account">
                             <div class="check-appearance"></div>
                         </div>
@@ -170,7 +156,7 @@
                             <label for="creditCard" class="relative z-10 block w-full text-base font-semibold cursor-pointer">
                                 Credit Card
                             </label>
-                            <input type="radio" value="credit-card" id="creditCard" name="payment-method"
+                            <input type="radio" value="credit_card" id="creditCard" name="payment_method"
                                 class="absolute inset-0 z-10 invisible peer/credit-card">
                             <div class="check-appearance"></div>
                         </div>
@@ -182,7 +168,7 @@
                             <label for="myWallet" class="relative z-10 block w-full text-base font-semibold cursor-pointer">
                                 MyWallet
                             </label>
-                            <input type="radio" value="my-wallet" id="myWallet" name="payment-method"
+                            <input type="radio" value="my_wallet" id="myWallet" name="payment_method"
                                 class="absolute inset-0 z-10 invisible peer/my-wallet">
                             <div class="check-appearance"></div>
                         </div>
@@ -191,14 +177,11 @@
                     <!-- Hidden name & email input field -->
                     <input type="text" name="name" id="completeName" placeholder="name" value="" class="text-black" hidden>
                     <input type="email" name="email" id="emailAddress" placeholder="email" value="" class="text-black" hidden>
-                    <a href="{{ url('/checkout-success') }}" class="btn-secondary">
-                        <img src="{{ asset('assets/svgs/ic-secure-payment.svg ') }}" alt="tickety-assets">
+                   
+                     <button type="submit" class="btn-secondary">
+                        <img src="{{ asset('assets/svgs/ic-secure-payment.svg') }}" alt="tickety-assets">
                         Make Payment Now
-                    </a>
-                    <!-- <button type="submit" class="btn-secondary">
-                        <img src="/public/assets/svgs/ic-secure-payment.svg" alt="tickety-assets">
-                        Make Payment Now
-                    </button> -->
+                    </button>
                 </form>
             </div>
         </div>

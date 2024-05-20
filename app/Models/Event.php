@@ -46,7 +46,7 @@ class Event extends Model
    
     /**
      * Get the lowest price ticket for the event.
-     */
+     */ 
     public function getStartFromAttribute()
     {
         $lowestTicket = $this->tickets()->orderBy('price')->first();
