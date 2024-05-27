@@ -1,11 +1,11 @@
 <x-frontend.layout>
-    @section('title', 'Checkout')
+    @section('title',  $event->name )
     <section class="container max-w-screen-xl pt-4 lg:pt-10 pb-[100px] overflow-hidden relative">
         <div class="xl:px-[60px]">
-            <!-- Breadcrumb -->
+            {{-- Breadcrumb --}}
             <ul class="inline-flex mb-5">
                 <li class="first:before:content-none before:content-['/'] before:mx-6">
-                    <a href="{{ url('/') }}" class="text-lg text-iron-grey">
+                    <a href="/index.html" class="text-lg text-iron-grey">
                         Home
                     </a>
                 </li>
@@ -23,12 +23,12 @@
 
             <div class="flex flex-wrap items-center justify-center gap-y-[30px] lg:justify-between lg:items-start">
                 <div class="max-w-[500px]">
-                    <img src="{{ asset($event->thumbnail) }}" class="w-[280px] h-[200px] rounded-2xl" alt="tickety-assets">
+                    <img src="{{ asset( $event->thumbnail ) }}" class="w-[280px] h-[200px] rounded-2xl" alt="tickety-assets">
                     <h1 class="text-[32px] font-bold mt-5 mb-[30px]">
                         {{ $event->name }}
                     </h1>
 
-                    <!-- Visible input fields -->
+                    {{-- Visible input fields --}}
                     <div class="flex flex-col gap-5 mb-[30px]">
                         <div class="flex flex-col gap-[10px]">
                             <label for="name" class="text-lg font-medium">Complete Name</label>
@@ -44,74 +44,76 @@
                         </div>
                     </div>
 
-                    <!-- Payment details -->
+                    {{-- Payment details --}}
                     <div class="flex flex-col gap-4">
                         <h6 class="text-xl font-semibold">
                             Payment Details
                         </h6>
                         @foreach ($tickets as $ticket)
-                                 <!-- ticket -->
+                                 {{-- ticket --}}
                         <div class="inline-flex items-center justify-between gap-4">
                             <p class="text-base font-medium">
-                               {{ $ticket->name }} <small>x {{ $ticket->quantity }}</small>
+                                {{ $ticket->name }} <small>x{{ $ticket->quantity }}</small>
                             </p>
                             <p class="text-base font-semibold">
                                 ${{ number_format($ticket->price) }}
                             </p>
                         </div>
                         @endforeach
-                        <!-- Unique code -->
+                   
+                        {{-- Unique code --}}
                         <div class="inline-flex items-center justify-between gap-4">
                             <p class="text-base font-medium">
-                                Unique code
+                                - Unique code
                             </p>
                             <p class="text-base font-semibold">
                                 ${{ number_format($uniquePrice) }}
                             </p>
                         </div>
-                        <!-- Tax -->
+                        {{-- Tax --}}
                         <div class="inline-flex items-center justify-between gap-4">
                             <p class="text-base font-medium">
-                                Tax 22%
+                               + Tax 22%
                             </p>
                             <p class="text-base font-semibold">
-                                ${{ number_format($tax) }}
+                                ${{ number_format($tax ) }}
                             </p>
                         </div>
-                        <!-- Grand total -->
+                        {{-- Grand total --}}
                         <div class="inline-flex items-center justify-between gap-4">
                             <p class="text-base font-medium">
                                 Grand total
                             </p>
                             <p class="text-[32px] text-secondary font-bold underline underline-offset-4">
-                                ${{ number_format($totalPrice) }}
+                                ${{ number_format( $totalPrice ) }}
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <form action="{{ route("checkout-pay") }}" method="POST " enctype="multipart/form-data"
+                <form action="{{ route('checkout-pay') }}" method="POST" enctype="multipart/form-data"
                     class="bg-primary p-5 rounded-2xl flex flex-col gap-5 max-w-[380px] w-full">
                     @csrf
                     @method('post')
+                   
                     <p class="text-xl font-semibold">
                         Payment method
                     </p>
-                    <!-- Manual Transfer -->
+                    {{-- Manual Transfer --}}
                     <div
                         class="relative px-5 py-6 cursor-pointer bg-bluish-purple rounded-2xl">
                         <div class="inline-flex items-center justify-between w-full">
                             <label for="manualTransfer" class="relative z-10 block w-full text-base font-semibold cursor-pointer">
                                 Manual Transfer
                             </label>
-                            <input type="radio" value="manual_transfer" id="manualTransfer" name="payment-method"
+                            <input type="radio" value="manual_transfer" id="manualTransfer" name="payment_method"
                                 class="absolute inset-0 z-10 invisible peer/manual-transfer" checked>
                             <div class="check-appearance"></div>
 
                         </div>
-                        <!-- Bank Accounts -->
+                        {{-- Bank Accounts --}}
                         <div class="flex flex-col gap-4 mt-4">
-                            <!-- Mandiri Account -->
+                            {{-- Mandiri Account --}}
                             <div class="flex items-center gap-5">
                                 <img src="{{ asset('assets/svgs/logo-mandiri.svg') }}" alt="tickety-assets">
                                 <div>
@@ -123,7 +125,7 @@
                                     </p>
                                 </div>
                             </div>
-                            <!-- BCA Account -->
+                            {{-- BCA Account --}}
                             <div class="flex items-center gap-5">
                                 <img src="{{ asset('assets/svgs/logo-bca.svg') }}" alt="tickety-assets">
                                 <div>
@@ -137,7 +139,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Virtual Account -->
+                    {{-- Virtual Account --}}
                     <div
                         class="relative px-5 py-6 cursor-pointer bg-bluish-purple rounded-2xl">
                         <div class="inline-flex items-center justify-between w-full">
@@ -149,7 +151,7 @@
                             <div class="check-appearance"></div>
                         </div>
                     </div>
-                    <!-- Credit Card -->
+                    {{-- Credit Card --}}
                     <div
                         class="relative px-5 py-6 cursor-pointer bg-bluish-purple rounded-2xl">
                         <div class="inline-flex items-center justify-between w-full">
@@ -161,7 +163,7 @@
                             <div class="check-appearance"></div>
                         </div>
                     </div>
-                    <!-- MyWallet -->
+                    {{-- MyWallet --}}
                     <div
                         class="relative px-5 py-6 cursor-pointer bg-bluish-purple rounded-2xl">
                         <div class="inline-flex items-center justify-between w-full">
@@ -174,11 +176,14 @@
                         </div>
                     </div>
 
-                    <!-- Hidden name & email input field -->
+                    {{-- Hidden name & email input field --}}
                     <input type="text" name="name" id="completeName" placeholder="name" value="" class="text-black" hidden>
                     <input type="email" name="email" id="emailAddress" placeholder="email" value="" class="text-black" hidden>
-                   
-                     <button type="submit" class="btn-secondary">
+                    {{-- <a href="{{ route('checkout-success') }}" class="btn-secondary">
+                        <img src="{{ asset('assets/svgs/ic-secure-payment.svg') }}" alt="tickety-assets">
+                        Make Payment Now
+                    </a> --}}
+                    <button type="submit" class="btn-secondary">
                         <img src="{{ asset('assets/svgs/ic-secure-payment.svg') }}" alt="tickety-assets">
                         Make Payment Now
                     </button>
@@ -188,7 +193,7 @@
     </section>
 
     @push('js')
-        <!-- append value in hidden field from Visible input fields -->
+        {{-- append value in hidden field from Visible input fields --}}
         <script>
             $('#visibleNameField').on('input', function() {
                 $('input:hidden[name=name]').val($(this).val())

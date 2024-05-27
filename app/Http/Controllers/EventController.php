@@ -6,7 +6,7 @@ use App\Models\Event;
 use App\Models\Ticket;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
-use PhpParser\Node\Stmt\Return_;
+
 
 class EventController extends Controller
 {
@@ -16,20 +16,20 @@ class EventController extends Controller
 
         return view('frontend.details', compact('event'));
     }
-
     public function checkout(Request $request, $slug)
     {
+        //mengambil data event sesuai slug
         $event = Event::fetch($slug);
-
+        //mengambil data tiket yang di pilih
         $selectedTickets = collect($request->tickets)->filter(function ($quantity) {
             return $quantity > 0;
         });
 
         $tickets = $selectedTickets->map(function ($quantity, $id) {
             $ticket = Ticket::find($id);
-            return $ticket ? (object)[
+            return $ticket ? (object) [
                 'name' => $ticket->name,
-                'quantity' => (int)$quantity,
+                'quantity' => (int) $quantity,
                 'price' => $ticket->price,
                 'total' => $ticket->price * $quantity,
             ] : null;
@@ -38,22 +38,24 @@ class EventController extends Controller
         $tax = 0.22 * $tickets->sum('total');
         $totalPrice = $tickets->sum('total') + $tax - $uniquePrice;
 
-        //temporaly session
+
+        // Store to session
         $request->session()->put('event', $event);
         $request->session()->put('tickets', $tickets);
         $request->session()->put('uniquePrice', $uniquePrice);
         $request->session()->put('totalPrice', $totalPrice);
+
         return view('frontend.checkout', compact('event', 'tickets', 'uniquePrice', 'tax', 'totalPrice'));
     }
-
     public function checkoutPay(Request $request)
     {
+        // Validasi data input
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email',
-            'payment_method' => 'required|string|in:manual_transfer'
+            'payment_method' => 'required|string|in:manual_transfer,virtual_account,credit_card,my_wallet'
         ]);
-
+        //get data from session
         // Get from session
         $event = $request->session()->get('event');
         $tickets = $request->session()->get('tickets');
@@ -71,20 +73,18 @@ class EventController extends Controller
             'total_price' => $totalPrice,
             'payment_method' => $request->payment_method,
         ]);
-
         // Create transaction details
         foreach ($tickets as $ticket) {
             $transaction->transactionDetails()->create([
                 'code' => 'TIX' . mt_rand(100000, 999999),
                 'ticket_id' => Ticket::where('name', $ticket->name)->first()->id,
                 'transaction_id' => $transaction->id,
-                'is_redemeed' => false,
+                'is_redeemed' => false,
             ]);
         }
 
-        return redirect('/checkout-success');
+        return redirect()->route('checkout-success');
     }
-   
     public function checkoutSuccess()
     {
         return view('frontend.checkout-success');

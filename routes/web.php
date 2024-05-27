@@ -3,6 +3,7 @@
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\EventController as AdminEventController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,9 +18,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/',[HomeController::class,'index'])->name('home');
 Route::get('/details/{slug}',[EventController::class,'index'])->name('detail');
-Route::post('/checkout/event/{slug}', [EventController::class,'checkout'])->name('checkout');
-Route::post('/checkout/pay', [EventController::class,'checkoutPay'])->name('checkout-pay');
-Route::post('/checkout-success', [EventController::class,' checkoutSuccess'])->name('checkout-success');
+Route::post('/checkout/event/{slug}',[EventController::class,'checkout'])->name('checkout');
+Route::post('/checkout/pay',[EventController::class,'checkoutPay'])->name('checkout-pay');
+Route::get('/checkout-success',[EventController::class,'checkoutSuccess'])->name('checkout-success');
 
 Route::middleware([
     'auth:sanctum',
@@ -29,4 +30,8 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+    Route::prefix('admin')->name('admin.')->group(function () {
+        // Code untuk routing admin
+        Route::resource('events', AdminEventController::class);
+    });
 });
