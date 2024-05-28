@@ -32,7 +32,7 @@ class EventRequest extends FormRequest
             'type' => 'required|in:online,offline',
             'files' => 'required|array',
             'files.*' => 'image|max:2048',
-            'is_popular' => 'boolean'
+            'is_populer' => 'boolean'
         ];
             // If edit, remove required
             if ($this->isMethod('put')) {

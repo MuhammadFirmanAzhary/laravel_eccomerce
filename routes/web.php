@@ -33,5 +33,6 @@ Route::middleware([
     Route::prefix('admin')->name('admin.')->group(function () {
         // Code untuk routing admin
         Route::resource('events', AdminEventController::class);
+        
     });
 });

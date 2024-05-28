@@ -93,7 +93,7 @@
               {{-- Is Popular --}}
               <div class="mb-6">
                 <label for="is_popular" class="block mb-2 text-sm">Populer?</label>
-                <input type="checkbox" name="is_popular" value="1"
+                <input type="checkbox" name="is_populer" value="1"
                        class="bg-gray-50 border border-gray-300 rounded-lg p-2.5"
                        {{ isset($event) && $event->is_popular ? 'checked' : '' }}>
               </div>

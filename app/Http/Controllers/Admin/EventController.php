@@ -45,7 +45,7 @@ class EventController extends Controller
         ]);
         // Handle is_popular checkbox
         $request->merge([
-            'is_popular' => $request->has('is_popular') ? true : false,
+            'is_populer' => $request->has('is_populer') ? true : false,
         ]);
 
         // Upload multiple photos
@@ -99,7 +99,7 @@ class EventController extends Controller
         ]);
         // Handle is_popular checkbox
         $request->merge([
-            'is_popular' => $request->has('is_popular') ? true : false,
+            'is_populer' => $request->has('is_populer') ? true : false,
         ]);
 
         // Upload multiple photos
@@ -114,8 +114,8 @@ class EventController extends Controller
                 'photos' => $photos,
             ]);
         }
-          // Create event
-    Event::create($request->except('files'));
+          // update event
+    Event::find($id)->update($request->except('files'));
 
     // Return to index
     return redirect()->route('admin.events.index')->with('success', 'Event created');
